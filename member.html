@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>My Dashboard — WELFARE TEAM 2026</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="topbar"><div class="brand-mark">W</div><div class="brand"><h1>WELFARE TEAM 2026</h1><small>Member Dashboard — private &amp; secure</small></div><div class="spacer"></div><span id="meBadge" class="badge">…</span><button class="btn btn-ghost btn-sm" onclick="logout()">Logout</button></div>
+<div class="wrap">
+  <div class="grid g4" id="kpis"></div>
+  <div class="tabs" id="tabs">
+    <button class="tab active" data-t="overview">Overview</button>
+    <button class="tab" data-t="record">Record Payment</button>
+    <button class="tab" data-t="savings">My Savings</button>
+    <button class="tab" data-t="loans">Loans</button>
+    <button class="tab" data-t="fines">Fines</button>
+    <button class="tab" data-t="cases">Welfare Cases</button>
+    <button class="tab" data-t="meetings">Meetings</button>
+    <button class="tab" data-t="constitution">Constitution</button>
+    <button class="tab" data-t="profile">Profile</button>
+  </div>
+  <div id="view"></div>
+</div>
+<script src="js/store.js"></script>
+<script src="js/api.js"></script>
+<script src="js/member.js"></script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: welfare2026-chama
+    runtime: node
+    plan: free
+    rootDir: .
+    buildCommand: echo "no build needed (zero-dependency Node)"
+    startCommand: node server/server.js
+    envVars:
+      - key: NODE_VERSION
+        value: 22.12.0
+    disk:
+      name: chama-data
+      mountPath: /opt/render/project/src/server/data
+      sizeGB: 1

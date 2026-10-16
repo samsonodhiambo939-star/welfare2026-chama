@@ -1,0 +1,1 @@
+{"name": "welfare2026-server","version": "1.0.0","description": "WELFARE TEAM 2026 chama backend + static frontend (Render single-service free deploy)","main": "server.js","scripts": {"start": "node server.js"},"engines": {"node": ">=22"},"license": "MIT"}

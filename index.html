@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WELFARE TEAM 2026 — Chama System Login</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="login-shell">
+  <div class="login-left">
+    <div class="row"><div class="brand-mark">W</div><div><h2 style="margin:0">WELFARE TEAM 2026</h2><small>Unity • Brotherhood • Mutual Support — HAFUNG Lineage</small></div></div>
+    <div class="hero" style="margin-top:20px">
+      <span class="badge">CONSTITUTION-BASED CHAMA SYSTEM</span>
+      <h2 style="margin:10px 0">Savings • Loans • Welfare Support</h2>
+      <p class="muted" style="color:#e8f0eb">Built strictly from the WELFARE-2026 Constitution (10 Chapters). Members pay to the chama account, record on their dashboard, then <b>Treasurer approves first</b> and <b>Chairman gives final approval</b>. Each member sees only their own dashboard.</p>
+      <ul class="rule-list">
+        <li>Registration <b>Ksh 2,000</b> (non-refundable) • Monthly sitting <b>Ksh 3,000</b> • Emergency <b>Ksh 10,000</b> in first 3 months</li>
+        <li>Normal Loan: max <b>Ksh 20,000</b>, 3 months, <b>10%/month</b> • Special Loan: 6 months, <b>20%/month</b> + guarantors</li>
+        <li>Funeral: Principal 5,000 • Beneficiary 4,000 • Parent/Guardian 3,000 • In-law 1,500</li>
+        <li>Health: Member 1,000 • Spouse/Child 500 (admitted &gt;3 days + documents)</li>
+        <li>Meetings: every <b>3rd Sunday</b> • AGM by <b>31st Dec</b> • Bank: <b>Equity Bank of Kenya</b></li>
+      </ul>
+      <div class="row">
+        <span class="pill p-approved">2-step approval</span>
+        <span class="pill p-pending_chairman">Private dashboards</span>
+        <span class="pill p-pending_treasurer">Constitution fines &amp; rules</span>
+      </div>
+    </div>
+    <p class="muted" style="color:#cbd8d0;margin-top:14px">12 founding members pre-loaded. Officials: Chairperson • Secretary • Treasurer • 2 Welfare Leaders. Term: 1 year, elections in December.</p>
+  </div>
+  <div class="login-right">
+    <div class="card">
+      <h3>Member / Admin Login</h3>
+      <p class="muted">Admin creates logins for members (photo optional) and can reset passwords. Use your username + password.</p>
+      <label>Username</label><input id="username" placeholder="e.g. maurice.juma, treasurer, chairman">
+      <label>Password</label><input id="password" type="password" placeholder="••••••••">
+      <div class="row" style="margin-top:14px"><button class="btn btn-green" onclick="doLogin()">Login Securely</button><button class="btn btn-line" onclick="fillDemo('member')">Demo member</button></div>
+      <div class="row" style="margin-top:8px"><button class="btn btn-line btn-sm" onclick="fillDemo('treasurer')">Demo treasurer</button><button class="btn btn-line btn-sm" onclick="fillDemo('chairman')">Demo chairman</button><button class="btn btn-line btn-sm" onclick="if(confirm('Reset all data to fresh seed?')){resetDB();alert('Reset done');}">Reset demo data</button></div>
+      <p id="msg" class="muted" style="color:#b91c1c"></p>
+      <div class="notice"><b>Default logins (12 constitution members pre-loaded):</b><br>Chairman: <b>chairman / chairman2026</b> (final approval)<br>Treasurer: <b>treasurer / treasurer2026</b> (first approval)<br>Members — one shared password: <b>firstname.lastname / Welfare@2026</b><br>e.g. maurice.juma / Welfare@2026, grace.achieng / Welfare@2026<br><span class="muted">Members can change password in Profile → must be 8+ chars with CAPITAL, small, number & special (green ticks ✔).</span></div>
+    </div>
+    <div class="card" style="margin-top:14px">
+      <h3>How payments work</h3>
+      <p class="muted">1. Member pays to chama account (bank/M-Pesa) → 2. Member records it on their dashboard with txn code → 3. Treasurer verifies & approves (stage 1) → 4. Chairman final-approves & posts (stage 2) → 5. Shows on member + admin dashboards with notification.</p>
+    </div>
+    <div class="footer">WELFARE TEAM 2026 • Non-political • Official WhatsApp group + officials' phone • © 2026</div>
+  </div>
+</div>
+<script src="js/store.js"></script>
+<script src="js/api.js"></script>
+<script>
+function fillDemo(who){ if(who==='treasurer'){username.value='treasurer';password.value='treasurer2026';} else if(who==='chairman'){username.value='chairman';password.value='chairman2026';} else {username.value='maurice.juma';password.value='Welfare@2026';} }
+async function doLogin(){
+  const u = username.value.trim().toLowerCase(), p = password.value;
+  msg.textContent='';
+  // 1) Try shared backend (Render/single-service deploy)
+  try{
+    if(await backendAvailable()){
+      const user = await apiLogin(u,p);
+      location.href = user.role==='member' ? 'member.html' : 'admin.html';
+      return;
+    }
+  }catch(e){ msg.textContent=e.message; return; }
+  // 2) Offline fallback (double-click demo mode)
+  const db = loadDB();
+  const user = db.users.find(x=>x.username.toLowerCase()===u && x.password===p);
+  if(!user){ msg.textContent='Invalid username or password. Ask admin to create/reset your login.'; return; }
+  if(user.status!=='active'){ msg.textContent='Account is '+user.status+'. Contact executive committee.'; return; }
+  setSession({userId:user.id, role:user.role, time:Date.now()});
+  if(user.role==='member') location.href='member.html';
+  else location.href='admin.html';
+}
+</script>
+</body>
+</html>
